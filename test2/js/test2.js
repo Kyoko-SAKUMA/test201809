@@ -5,19 +5,15 @@
 	'use strict';
 
 	let MoveWithAnimation = window.MoveWithAnimation || {};
+	const MOVING_PX_PER_SECOND = 250;
+	const ANIMATION_SPEED_SEC = 100;
+	const DEFAULT_DIRECTION = 'right';
+
 	MoveWithAnimation = (function() {
 		var instanceId = 0;
 		function MoveWithAnimation(e, options) {
 			const SELF = this;
-			SELF.settings = $.extend({}, {
-				// 移動秒速（単位：px）
-				'movingPxPerSecond'		: 250,
-				// 最初の向き（'left' or 'right'）
-				'defaultDirection'		: 'right',
-				// アニメーション速度（単位：ミリ秒）
-				'animationSpeedMsec'	: 100,
-			}, options);
-			
+			SELF.settings = options;
 			if ($(e).length && $(e).parent().length) {
 				SELF.instanceId = instanceId++;
 				SELF.settings['element'] = e;
@@ -45,12 +41,14 @@
 				SELF.settings['images']['left'] = SELF.settings['images']['right'];
 			}
 		}
-		if (!SELF.checkDirection(SELF.settings['defaultDirection'])) {
-			SELF.settings['defaultDirection'] = 'right';
+		if ('undefined' === typeof SELF.settings['movingPxPerSecond'] || !SELF.isNaturalNumber(SELF.settings['movingPxPerSecond'])) {
+			SELF.settings['movingPxPerSecond'] = MOVING_PX_PER_SECOND;
+		}
+		if ('undefined' === typeof SELF.settings['animationSpeedMsec'] || !SELF.isNaturalNumber(SELF.settings['animationSpeedMsec'])) {
+			SELF.settings['animationSpeedMsec'] = ANIMATION_SPEED_SEC;
 		}
 
 		SELF.updateCharacterXPositionMax();
-		SELF.setDirection(SELF.settings['defaultDirection']);
 		SELF.setAnimationNo(1);
 		SELF.setTimerId();
 		SELF.setMoving(false);
@@ -207,26 +205,26 @@
 	 */
 	MoveWithAnimation.prototype.setDirection = function(direction) {
 		const SELF = this;
-		if (!SELF.checkDirection(direction)) {
-			direction = SELF.settings['defaultDirection'];
+		switch (direction) {
+			case 'left':
+			case 'right':
+				break;
+			default:
+				direction = DEFAULT_DIRECTION;
+				break;
 		}
 		$(SELF.getElement()).attr('data-direction', direction);
 		SELF.updateImagePath();
 	};
 
 	/**
-	 * 移動方向値チェック
+	 * 自然数かどうかチェック
 	 *
-	 * @param {string} direction 移動方向
-	 * @param {bool} 有効であればtrue
+	 * @param {int} checkVal チェック値
+	 * @param {bool} 自然数であればtrue
 	 */
-	MoveWithAnimation.prototype.checkDirection = function(direction) {
-		switch (direction) {
-			case 'left':
-			case 'right':
-				return true;
-		}
-		return false;
+	MoveWithAnimation.prototype.isNaturalNumber = function(checkVal) {
+		return (/^[1-9]{1}[0-9]*$/.test(checkVal)) ? true : false;
 	};
 
 	/**
@@ -246,7 +244,7 @@
 	 */
 	MoveWithAnimation.prototype.setAnimationNo = function(animationNo) {
 		const SELF = this;
-		if (!/^[1-9]{1}[0-9]*$/.test(animationNo)) {
+		if (!SELF.isNaturalNumber(animationNo)) {
 			animationNo = 1;
 		}
 		$(SELF.getElement()).attr('data-animationno', animationNo);
