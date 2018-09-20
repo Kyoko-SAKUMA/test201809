@@ -15,6 +15,8 @@
 			const SELF = this;
 			SELF.settings = options;
 			if ($(e).length && $(e).parent().length) {
+				$(e).css('position', 'absolute');
+				$(e).parent().css('position', 'relative');
 				SELF.instanceId = instanceId++;
 				SELF.settings['element'] = e;
 				SELF.init();
