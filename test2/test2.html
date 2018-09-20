@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>test2</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="css/test2.css">
+</head>
+<body>
+	<div id="stage_wrapper1" class="stage_wrapper">
+		<div class="stage">
+			<img id="character1" class="character" src="img/mario_1.png">
+		</div>
+		<div class="ground">&nbsp;</div>
+	</div>
+
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/test2.js"></script>
+	<script>
+		;(function($) {
+			'use strict';
+			$(function() {
+				$('#character1').moveWithAnimation({
+					'images'	: {
+						'left'	: [
+							'img/mario_4.png',
+							'img/mario_5.png',
+							'img/mario_6.png'
+						],
+						'right'	: [
+							'img/mario_1.png',
+							'img/mario_2.png',
+							'img/mario_3.png'
+						]
+					}
+				});
+			});
+		})(jQuery);
+	</script>
+</body>
+</html>

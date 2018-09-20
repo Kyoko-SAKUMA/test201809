@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.stage_wrapper {
+	margin: 10px;
+	width: calc(100% - 20px);
+}
+.stage {
+	position: relative;
+	height: 160px;
+}
+.ground {
+	height: 30px;
+}
+
+#stage_wrapper1 .stage {
+	background-color: #6b88fe;
+}
+#stage_wrapper1 .ground {
+	background-color: #e75f13;
+}
+
+.character {
+	position: absolute;
+	left: calc(50% - 40px);
+	bottom: 0;
+	z-index: 1;
+	width: 80px;
+	height: 80px;
+}
